@@ -347,8 +347,8 @@ class Chats extends Component
         $this->selectedConversationId = request()->conversation;
         $this->conversations = collect();
 
-        if (auth()->user()->can('chat-specific')) {
-            $this->psychologist = auth()->user()->can('chat-specific') ? User::with('psychologist')
+        if (!auth()->user()->can('chat-all')) {
+            $this->psychologist = !auth()->user()->can('chat-all') ? User::with('psychologist')
                 ->whereHas('psychologist', function ($query) {
                     $query->where('online_chat', '=', 1);
                 })
